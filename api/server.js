@@ -7,11 +7,27 @@ const server = express();
 
 server.use(express.json());
 
+/*
+// SANITY CHECK
 server.get('/', (req, res) => {
  // res.status(200).json({ api: 'up' });
    	 // OR
   res.send(`<h2> Sanity HTML code here </h2>`);
 });
+*/
+
+// sanity check
+server.get('/', (req, res) => {
+  res.cookie('sanityCookieHere', 'cookieForSanity');
+
+  // res.status(200).json({message: ` sanity message`});
+    // OR
+   res.status(200)
+   //   .send(`<h2> Sanity HTML code here </h2>`)
+      .json({message: ` sanity message`});
+
+})
+
 
 server.get('/hobbits', (req, res) => {
   Hobbits.getAll()
