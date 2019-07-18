@@ -5,6 +5,7 @@ const server  = require('./server');
 const request = require('supertest');
 
 describe(`'server tests !!!! `, () => {
+    console.log('>>>>>>. Server Tests Started');
     it(' should set up the test environment', () => {
         expect(process.env.DB_ENV).toBe('testing');
     });
@@ -15,7 +16,7 @@ describe(`'server tests !!!! `, () => {
         const expectedStatusCode_200 = 200;
         const expectedBody = {message: ` sanity message`};
 
-        it(`should return by 200 using Promise .then`, () => {
+        it(`should return sanity chceck & status 200 using Promise .then`, () => {
             let response;
             return request(server)
                 .get('/')
@@ -28,9 +29,10 @@ describe(`'server tests !!!! `, () => {
 
         })
 
-        it('should return 200 using Promise async/await', async () => {
+        it('should return sanity check & status 200 using Promise async/await', async () => {
+            const expectedStatusCode_200 = 200;
             const expectedBody = {message: ` sanity message`};
-            
+
             const response = await request(server)  // NO semicolon here
                 .get('/');  // only put semicolon here    
                 expect(response.status).toBe(200);

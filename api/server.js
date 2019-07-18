@@ -5,7 +5,8 @@ const Hobbits = require('../hobbits/hobbitsModel.js');
 //define express app as server 
 const server = express();
 
-server.use(express.json());
+// mount middleware
+server.use(express.json()); // parses req with JSON payloads
 
 /*
 // SANITY CHECK
@@ -22,21 +23,37 @@ server.get('/', (req, res) => {
 
   // res.status(200).json({message: ` sanity message`});
     // OR
+
    res.status(200)
-   //   .send(`<h2> Sanity HTML code here </h2>`)
+   // OR  .send(`<h2> Sanity HTML code here </h2>`)
       .json({message: ` sanity message`});
 
 })
 
-
+/*
 server.get('/hobbits', (req, res) => {
   Hobbits.getAll()
+    // Promise sucesss, cb obj 'hobbits' passed to then
     .then(hobbits => {
       res.status(200).json(hobbits);
-    })
+    }) 
+    // Promise error, cb obj 'error 'passed into catch
     .catch(error => {
       res.status(500).json(error);
     });
 });
+*/
+
+// async returns Promise, await receives Promise
+server.get('/hobbits', async(req,res) => {
+
+  try{
+    const hobbits = await Hobbits.getAll()   // getAll >> return db('hobbits');
+    res.status(200).json(hobbits);
+  }
+  catch (err){
+    res.status(500).json(err);
+  }
+})
 
 module.exports = server;

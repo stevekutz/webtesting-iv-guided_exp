@@ -14,10 +14,10 @@ describe(` hobbits db tests !!!! `, () => {
     
     describe('should insert hobbits into the db',  () => {
         // WE MUST clean up/reset db after each test
-        beforeEach( async ()=> {   // ALSO WORKS  afterEach( async () =>
+         beforeEach( async ()=> {   // ALSO WORKS  afterEach( async () =>
             await db('hobbits').truncate();
         });
-        
+      
         it(' should return insert some hobbits', async () => {
             // using model methods
             await Hobbits.insert({name : 'Sam'});
