@@ -31,24 +31,20 @@ describe(`'server tests !!!! `, () => {
         it('should return 200 using Promise async/await', async () => {
             const expectedBody = {message: ` sanity message`};
             
-            const response = await request(server)
-            
-                .get('/')    
+            const response = await request(server)  // NO semicolon here
+                .get('/');  // only put semicolon here    
                 expect(response.status).toBe(200);
                 expect(response.body).toEqual(expectedBody);
         })
 
+        it('should return JSON', async () => {
+            const res = await request(server).get('/');
+            expect(res.type).toBe('application/json');
+        })
+
+
+
     })
     
-
-    describe('/GET', () => {
-        it('should return 200', () => {
-            return request(server)
-                .get('/')
-                .then(res => {
-                    expect(res.status).toBe(200);
-                })
-        })
-    })
 
 });
