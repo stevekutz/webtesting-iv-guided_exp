@@ -1,5 +1,6 @@
 // Update with your config settings.
-
+// NOTICE we now have a config obj for testing 
+// this is a dedicated configuration key
 module.exports = {
   development: {
     client: 'sqlite3',
