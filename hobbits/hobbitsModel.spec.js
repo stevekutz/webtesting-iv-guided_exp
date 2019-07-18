@@ -13,6 +13,11 @@ const Hobbits = require('./hobbitsModel');
 describe(` hobbits db tests !!!! `, () => {
     
     describe('should insert hobbits into the db',  () => {
+        // WE MUST clean up/reset db after each test
+        beforeEach( async ()=> {   // ALSO WORKS  afterEach( async () =>
+            await db('hobbits').truncate();
+        });
+        
         it(' should return insert some hobbits', async () => {
             // using model methods
             await Hobbits.insert({name : 'Sam'});
@@ -23,6 +28,12 @@ describe(` hobbits db tests !!!! `, () => {
 
             expect(hobbits).toHaveLength(2);
             expect(hobbits[0].name).toBe('Sam');
+        });
+
+        it('should return the new hobbit on insert' , async () => {
+             const hobbit = await Hobbits.insert({name: 'Sam'});
+
+             expect(hobbit).toEqual({id: 1, name: 'Sam'});
         });
 
     });
