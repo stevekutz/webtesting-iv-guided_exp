@@ -36,6 +36,37 @@ describe(` hobbits db tests !!!! `, () => {
              expect(hobbit).toEqual({id: 1, name: 'Sam'});
         });
 
+        it('should return hobbit by id', async () => {
+          //  DONT DO THIS, we want to keep testing modular and 'insert' inside here
+            // add some hobbits
+
+            beforeEach( async ()=> {   // ALSO WORKS  afterEach( async () =>
+                await db('hobbits').truncate();
+            });
+
+
+            await Hobbits.insert({name : 'Sam'});
+            await Hobbits.insert({name : 'Frodo'});
+            await Hobbits.insert({name : 'Sparky'});
+          
+         /*
+            await db('hobbits').insert([
+                {name: 'Sam'},
+                {name: 'Frodo'},
+                {name: 'Sparky'}
+            ])    
+         */   
+            const allHobbits = await db('hobbits');
+            console.log('>>>>>>>>>> ', allHobbits);
+            console.log('>>>>>>>> ', allHobbits[0].name )
+
+            const hobbit = await Hobbits.findById(3);
+            console.log('>>', hobbit);
+
+            expect(hobbit.name).toBe('Sparky');  // msut have first() in model
+            //
+        })
+
     });
     
 });
