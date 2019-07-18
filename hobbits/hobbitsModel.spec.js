@@ -1,14 +1,22 @@
 // ADD THIS !!!
-// const server  = require('../api/server');
+const server  = require('../api/server');
 const db = require('../data/dbConfig');
 
 // define data access file
 const Hobbits = require('./hobbitsModel');
 
-// NOT NEEDED becuase we are not testing endpont, we are testing db methods
-// const request = require('supertest');
+// NEEDED when we are  testing endponts, not needed when we are testing db methods
+ const request = require('supertest');
 
+ const someHobbits =   [
+    {name: 'Sam'},
+    {name: 'Frodo'},
+    {name: 'Sparky'}
+    ]; 
 
+const testHobbits = someHobbits.map( (hobbit, i) => {
+    return {id:i + 1, name: hobbit.name};
+})    
 
 describe(` hobbits db tests !!!! `, () => {
     
@@ -37,25 +45,26 @@ describe(` hobbits db tests !!!! `, () => {
         });
 
         it('should return hobbit by id', async () => {
-          //  DONT DO THIS, we want to keep testing modular and 'insert' inside here
-            // add some hobbits
-
+      
+/*
             beforeEach( async ()=> {   // ALSO WORKS  afterEach( async () =>
                 await db('hobbits').truncate();
             });
-
-
+*/            
+            //  DONT DO THIS, we want to keep testing modular and 'insert' inside here
+                    // add some hobbits
+            /*
             await Hobbits.insert({name : 'Sam'});
             await Hobbits.insert({name : 'Frodo'});
             await Hobbits.insert({name : 'Sparky'});
-          
-         /*
+            */
+         
             await db('hobbits').insert([
                 {name: 'Sam'},
                 {name: 'Frodo'},
                 {name: 'Sparky'}
-            ])    
-         */   
+            ]);    
+            
             const allHobbits = await db('hobbits');
             console.log('>>>>>>>>>> ', allHobbits);
             console.log('>>>>>>>> ', allHobbits[0].name )
@@ -63,10 +72,30 @@ describe(` hobbits db tests !!!! `, () => {
             const hobbit = await Hobbits.findById(3);
             console.log('>>', hobbit);
 
-            expect(hobbit.name).toBe('Sparky');  // msut have first() in model
+            expect(hobbit.name).toBe('Sparky');  // must have first() in model
             //
         })
 
+        it('returns null on invalid id', async () => {
+                // REMEMBER that we reset db before each test
+                const hobbit = await Hobbits.findById(0);
+
+                expect(hobbit).toBeUndefined();
+        })
+
+        it('should hit hobbits endpoint', async () => {
+                const res = await request(server).get('/hobbits');
+                expect(res.status).toBe(200);
+                expect(res.body).toEqual([]);
+        })
+
+        it('should return all hobbits in db', async () => {
+            await db('hobbits').insert(someHobbits);
+
+            const res = await request(server).get('/hobbits');
+            expect(res.status).toBe(200);
+            expect(res.body).toEqual(testHobbits);
+        });
     });
     
 });

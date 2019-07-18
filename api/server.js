@@ -58,7 +58,7 @@ server.get('/hobbits', async(req,res) => {
 
 server.get('/hobbits/:id', async(req, res) => {
   const {id} = req.params;
-  // something vv
+  
   try{
     const hobbit = await Hobbits.findById(id);
     console.log('server promise Hobbit', hobbit)

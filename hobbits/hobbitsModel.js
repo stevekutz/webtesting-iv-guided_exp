@@ -9,13 +9,16 @@ module.exports = {
 };
 
 async function insert(hobbit) {
- // return db('hobbits').insert(hobbit);
+ // return db('hobbits').insert(hobbit); 
  
  const [id] = await db('hobbits').insert(hobbit);
+  // this is jut like findById
+  /*
   return db('hobbits')
     .where({id})
     .first();
-  
+  */
+ return findById(id);
 }
 
 async function update(id, changes) {
