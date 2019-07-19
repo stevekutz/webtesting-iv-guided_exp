@@ -43,12 +43,15 @@ server.get('/hobbits', (req, res) => {
     });
 });
 */
+let dbData;
 
 // async returns Promise, await receives Promise
 server.get('/hobbits', async(req,res) => {
 
   try{
     const hobbits = await Hobbits.getAll()   // getAll >> return db('hobbits');
+    dbData = hobbits;
+    console.log('>>>>>>>>>>>>>>>>>>>> \n', dbData);
     res.status(200).json(hobbits);
   }
   catch (err){
